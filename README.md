@@ -30,7 +30,7 @@ Vous travaillez sur les données de vente de l'entreprise fictive **AdventureWor
 ## 5. Structure du repo
 
 ```
-po3-projet21-tests-automatises-nonregression/
+projet21-tests-automatises-nonregression/
 ├── README.md
 ├── docs/
 │   ├── architecture.md          → schéma d'intégration des tests dans le cycle CI/CD
@@ -74,7 +74,7 @@ Dans `docs/note-pedagogique.md`, structurez votre note selon ce plan (imposé po
 
 ## 9. Lien avec les autres projets du domaine
 
-- **Projet 4** (`po3-projet04-pbip-git-alm`) fournit le socle de versionning sur lequel repose votre scénario
-- **Projet 5** (`po3-projet05-deployment-pipelines-cicd`) automatise le déploiement — vos tests devraient se positionner **juste avant** cette étape, comme un verrou avant mise en production
+- **Projet 4** (`projet4-pbip-git-alm`) fournit le socle de versionning sur lequel repose votre scénario
+- **Projet 5** (`projet5-deployment-pipelines-cicd`) automatise le déploiement — vos tests devraient se positionner **juste avant** cette étape, comme un verrou avant mise en production
 
 ➡️ Restez cohérents avec les 2 autres équipes sur la structure du modèle sémantique utilisé comme référence commune.
