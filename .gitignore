@@ -1,0 +1,10 @@
+# Fichiers temporaires Power BI / système
+*.pbix.bak
+~$*.pbix
+.DS_Store
+Thumbs.db
+
+# Environnements locaux
+.venv/
+__pycache__/
+node_modules/
