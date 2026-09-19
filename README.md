@@ -1,6 +1,6 @@
-# projet4-pbip-git-alm
+# projet21-tests-automatises-nonregression
 
-## Industrialiser un projet Power BI avec PBIP, Git, collaboration et environnements DEV–TEST–PROD
+## Mettre en place des tests automatisés pour sécuriser les évolutions d'un modèle sémantique Power BI
 
 **Domaine :** DevOps, ALM & CI/CD — **Product Owner :** PO 3
 
@@ -8,7 +8,7 @@
 
 ## 1. Besoin métier
 
-Aujourd'hui, un rapport Power BI est souvent modifié directement, sans trace claire des changements, sans possibilité simple de revenir en arrière, et sans étape de validation avant que la modification n'atteigne les utilisateurs finaux. Ce projet répond à un besoin réel : **permettre à une équipe de faire évoluer un rapport Power BI de façon maîtrisée**, comme on le ferait pour n'importe quel projet logiciel — avec un historique des modifications, une revue avant validation, et une séparation claire entre développement, test et production.
+Un modèle sémantique Power BI peut être modifié (une formule DAX, une relation, une règle métier) tout en restant **techniquement valide** — il s'ouvre, les mesures ne renvoient pas d'erreur — alors même qu'il produit désormais des **résultats métier faux** (un chiffre d'affaires incorrect, un KPI erroné). Ce projet répond à ce besoin : **détecter automatiquement ce type de régression avant qu'elle n'atteigne la production**, pour passer de "le modèle fonctionne" à "nous pouvons démontrer que le modèle produit toujours les bons résultats".
 
 ## 2. Contexte fil rouge
 
@@ -16,28 +16,28 @@ Vous travaillez sur les données de vente de l'entreprise fictive **AdventureWor
 
 ## 3. Description générale du projet
 
-**Mission :** transformer une solution Power BI existante en projet **PBIP**, la versionner avec **Git** (usage réel de branches et de pull requests), puis organiser un cycle **DEV–TEST–PROD**. Vous devez être capables de montrer, de bout en bout, le parcours d'une modification : depuis son développement jusqu'à sa validation en environnement de test.
+**Mission :** mettre en place une stratégie de **tests automatisés** vérifiant qu'une évolution d'un modèle sémantique Power BI n'entraîne pas de régression sur les données et les résultats métier. Vous devez définir des valeurs de référence, construire plusieurs catégories de tests, introduire volontairement des régressions pour vérifier qu'elles sont détectées, puis réfléchir à l'intégration de ces tests dans un cycle **PBIP → Git → Tests → PASS/FAIL → Validation → Déploiement**.
 
 ## 4. Comment démarrer
 
-1. **Point de départ :** vous n'avez pas à construire un nouveau rapport Power BI de zéro. Réutilisez un rapport `.pbix` déjà construit pendant vos TP/exercices sur la base AdventureWorks (par exemple un rapport simple avec quelques pages : CA par région, top produits, évolution mensuelle). S'il n'en existe pas un tout prêt, construisez-en un **volontairement simple** — l'objectif du projet n'est pas la richesse du rapport, mais la démonstration du processus autour de lui.
-2. Convertissez ce rapport au format **PBIP** (Power BI Desktop → options → "Power BI Project (.pbip)").
-3. Initialisez ce repo Git et versionnez les fichiers PBIP obtenus.
-4. Définissez avec votre équipe une convention de nommage de branches et le rôle de "relecteur" sur les pull requests.
-5. Simulez concrètement vos 3 environnements DEV/TEST/PROD (3 workspaces Power BI Service, ou 3 dossiers/branches locales — à documenter dans `docs/architecture.md`).
-6. Démontrez le parcours complet d'une modification : développement → pull request → revue → fusion → validation en TEST.
+1. **Point de départ :** simulez vous-même un modèle sémantique fonctionnel sur AdventureWorks (reprenez un rapport existant de vos TP ou construisez-en un simple), et placez-le dans `pbip/`.
+2. Identifiez 3 à 5 mesures/KPI critiques à protéger (ex : chiffre d'affaires total, nombre de commandes, cohérence CA global vs somme des régions).
+3. Définissez des **valeurs de référence** précises pour ces mesures, dans des contextes de filtre donnés.
+4. Construisez plusieurs catégories de tests dans `tests/` : qualité des données, présence des objets du modèle, stabilité des résultats DAX.
+5. Introduisez volontairement 2-3 régressions (formule DAX cassée, relation supprimée, règle métier modifiée) et vérifiez que vos tests les détectent (résultat **FAIL**).
+6. Documentez comment ces tests s'intégreraient dans le cycle `PBIP → Git → Tests → PASS/FAIL → Validation → Déploiement`.
 
 ## 5. Structure du repo
 
 ```
-po3-projet04-pbip-git-alm/
+po3-projet21-tests-automatises-nonregression/
 ├── README.md
 ├── docs/
-│   ├── architecture.md          → schéma de votre organisation Git/environnements
+│   ├── architecture.md          → schéma d'intégration des tests dans le cycle CI/CD
 │   └── note-pedagogique.md      → à remplir au fur et à mesure (voir section 6)
-├── pbip/                        → vos fichiers PBIP versionnés
-├── scripts/                     → scripts éventuels (vide si non utilisé)
-└── tests/                       → non utilisé pour ce projet (laisser vide)
+├── pbip/                        → votre modèle sémantique de référence (simulé)
+├── scripts/                     → scripts d'exécution des tests
+└── tests/                       → catalogue des tests + résultats attendus/obtenus
 ```
 
 ## 6. Note pédagogique — squelette à remplir
@@ -56,22 +56,25 @@ Dans `docs/note-pedagogique.md`, structurez votre note selon ce plan (imposé po
 
 ## 7. Livrables attendus
 
-- Une démonstration fonctionnelle du cycle complet
-- Les fichiers PBIP et l'historique Git (ce repo)
-- Un schéma d'architecture (`docs/architecture.md`)
+- Une démonstration fonctionnelle du dispositif de tests
+- Un catalogue des tests avec leurs résultats attendus (`tests/`)
+- Les scripts permettant leur exécution (`scripts/`)
+- Un rapport synthétique PASS/FAIL par test
+- Une démonstration qu'une erreur volontaire est bien détectée
+- Un schéma d'intégration dans le cycle PBIP/Git/CI-CD (`docs/architecture.md`)
 - La note pédagogique complète (`docs/note-pedagogique.md`)
 
 ## 8. Critères de réussite
 
-- Le scénario métier est compréhensible
-- La solution est reproductible par quelqu'un d'autre
-- Les choix techniques sont justifiés simplement
-- Le résultat peut être démontré en direct
-- Les limites et points de vigilance sont explicités
+- Les tests ne se limitent pas à vérifier que le modèle s'ouvre : ils contrôlent les **données, KPI et résultats métier**
+- Les valeurs de référence et critères d'acceptation sont clairement définis
+- Les tests sont reproductibles
+- Une modification incorrecte provoque bien l'échec d'au moins un test
+- Les résultats permettent d'identifier rapidement la régression
 
 ## 9. Lien avec les autres projets du domaine
 
-- **Projet 5** (`po3-projet05-deployment-pipelines-cicd`) part conceptuellement d'une solution déjà versionnée comme la vôtre pour travailler le déploiement
-- **Projet 21** (`po3-projet21-tests-automatises-nonregression`) viendra ajouter des tests avant le déploiement
+- **Projet 4** (`po3-projet04-pbip-git-alm`) fournit le socle de versionning sur lequel repose votre scénario
+- **Projet 5** (`po3-projet05-deployment-pipelines-cicd`) automatise le déploiement — vos tests devraient se positionner **juste avant** cette étape, comme un verrou avant mise en production
 
-➡️ Documentez clairement votre structure et vos conventions : les autres équipes s'y réfèrent pour rester cohérentes.
+➡️ Restez cohérents avec les 2 autres équipes sur la structure du modèle sémantique utilisé comme référence commune.
