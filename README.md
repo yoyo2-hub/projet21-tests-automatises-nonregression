@@ -2,7 +2,7 @@
 
 ## Mettre en place des tests automatisés pour sécuriser les évolutions d'un modèle sémantique Power BI
 
-**Domaine :** DevOps, ALM & CI/CD — **Product Owner :** PO 3
+**Domaine :** DevOps, ALM & CI/CD — **Product Owner :** Chaima Dallel
 
 ---
 
