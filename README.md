@@ -20,12 +20,13 @@ Vous travaillez sur les données de vente de l'entreprise fictive **AdventureWor
 
 ## 4. Comment démarrer
 
-1. **Point de départ :** simulez vous-même un modèle sémantique fonctionnel sur AdventureWorks (reprenez un rapport existant de vos TP ou construisez-en un simple), et placez-le dans `pbip/`.
-2. Identifiez 3 à 5 mesures/KPI critiques à protéger (ex : chiffre d'affaires total, nombre de commandes, cohérence CA global vs somme des régions).
-3. Définissez des **valeurs de référence** précises pour ces mesures, dans des contextes de filtre donnés.
-4. Construisez plusieurs catégories de tests dans `tests/` : qualité des données, présence des objets du modèle, stabilité des résultats DAX.
-5. Introduisez volontairement 2-3 régressions (formule DAX cassée, relation supprimée, règle métier modifiée) et vérifiez que vos tests les détectent (résultat **FAIL**).
-6. Documentez comment ces tests s'intégreraient dans le cycle `PBIP → Git → Tests → PASS/FAIL → Validation → Déploiement`.
+1. **Point de départ :** vous ne construisez pas de modèle vous-même. Utilisez l'exemple **AdventureWorks Sales** de Microsoft (dossier `AdventureWorks Sales Sample` du dépôt `microsoft/powerbi-desktop-samples`) : téléchargez `AdventureWorks Sales.pbix` et `AdventureWorks Sales.xlsx`, convertissez le `.pbix` en projet PBIP (option d'enregistrement PBIP de Power BI Desktop), puis placez le projet dans `pbip/` et le fichier Excel dans `pbip/data/`. Ne committez pas le `.pbix`. Marquez cette version comme référence (tag `baseline-v1`). Les autres équipes utilisent la même base, ce qui garantit la cohérence entre les projets sans coordination.
+2. Installez l'outil de test `pql-test` (`pip install pql-test`) et lancez un de ses exemples pour vérifier qu'il fonctionne avec votre Power BI Desktop.
+3. Listez les mesures du modèle, puis identifiez 3 à 5 mesures/KPI critiques à protéger (ex : chiffre d'affaires total, nombre de commandes, cohérence du total vs la somme par catégorie ou par région, selon ce qui existe dans le modèle).
+4. Définissez des valeurs de référence précises pour ces mesures, dans des contextes de filtre donnés, à partir de la version `baseline-v1`.
+5. Construisez plusieurs catégories de tests avec `pql-test` : qualité des données, présence des objets du modèle, stabilité des résultats DAX. Les fichiers de test (`*.Tests.dax`) se placent dans le dossier `DAXQueries/` du projet PBIP ; leur description et leurs résultats attendus vont dans `tests/`.
+6. Introduisez volontairement 2-3 régressions (formule DAX cassée, relation supprimée, règle métier modifiée) sur une branche ou une copie, jamais sur la version de référence, et vérifiez que vos tests les détectent (résultat FAIL).
+7. Documentez comment ces tests s'intégreraient dans le cycle `PBIP → Git → Tests → PASS/FAIL → Validation → Déploiement`.
 
 ## 5. Structure du repo
 
