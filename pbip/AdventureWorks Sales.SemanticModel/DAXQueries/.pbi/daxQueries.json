@@ -1,7 +1,8 @@
 {
   "version": "1.0.0",
   "tabOrder": [
-    "Requête 1"
+    "Requête 1",
+    "DataQuality.ANY.Tests"
   ],
-  "defaultTab": "Requête 1"
+  "defaultTab": "DataQuality.ANY.Tests"
 }
