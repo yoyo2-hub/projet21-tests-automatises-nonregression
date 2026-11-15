@@ -10,7 +10,7 @@ annotation PBI_QueryOrder = ["Customer","Date","Product","Reseller","Sales","Sal
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBI_ProTooling = ["DaxQueryView_Desktop","DevMode"]
+annotation PBI_ProTooling = ["DaxQueryView_Desktop","DevMode","TMDLView_Desktop"]
 
 ref table Customer
 ref table DateTableTemplate_788642c5-9a9d-4431-b350-9f47f7e53393

@@ -1,0 +1,7 @@
+DEFINE
+FUNCTION DataQuality.ANY.Tests = () =>
+UNION(
+    PQL.Assert.Col.ShouldBeDistinct("Verify ProductKey is distinct in Product", 'Product'[ProductKey]),
+    PQL.Assert.Col.ShouldBeDistinct("Verify SalesTerritoryKey is distinct in Sales Territory", 'Sales Territory'[SalesTerritoryKey])
+)
+EVALUATE DataQuality.ANY.Tests()
