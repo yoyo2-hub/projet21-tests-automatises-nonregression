@@ -8,3 +8,8 @@ Thumbs.db
 .venv/
 __pycache__/
 node_modules/
+
+# Power BI project: local files
+*.pbix
+**/.pbi/localSettings.json
+**/.pbi/cache.abf

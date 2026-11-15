@@ -1,0 +1,6 @@
+EVALUATE
+ROW(
+    "Total Sales", [Total Sales],
+    "Total Quantity", [Total Quantity],
+    "Order Lines Count", [Order Lines Count]
+)
