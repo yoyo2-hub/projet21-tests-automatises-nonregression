@@ -4134,3 +4134,83 @@ function 'DataQuality.ANY.Tests' =
 		)
 	lineageTag: cc1ce2af-5e36-49c6-a5cf-95d49fbe6e1c
 
+function 'Measures.ANY.Tests' =
+		() =>
+		UNION(
+		    // ===== 3.1 Sans filtre =====
+		    PQL.Assert.ShouldEqual("Total Sales | sans filtre", 109809274.2, ROUND([Total Sales], 2)),
+		    PQL.Assert.ShouldEqual("Total Quantity | sans filtre", 274776, [Total Quantity]),
+		    PQL.Assert.ShouldEqual("Order Lines Count | sans filtre", 121253, [Order Lines Count]),
+		    PQL.Assert.ShouldEqual("Sales Amount by Due Date | sans filtre", 109809274.2, ROUND([Sales Amount by Due Date], 2)),
+		
+		    // ===== 3.2 Par annee fiscale =====
+		    PQL.Assert.ShouldEqual("Total Sales | FY2018", 23860891.17, ROUND(CALCULATE([Total Sales], 'Date'[Fiscal Year] = "FY2018"), 2)),
+		    PQL.Assert.ShouldEqual("Total Quantity | FY2018", 24349, CALCULATE([Total Quantity], 'Date'[Fiscal Year] = "FY2018")),
+		    PQL.Assert.ShouldEqual("Order Lines Count | FY2018", 10918, CALCULATE([Order Lines Count], 'Date'[Fiscal Year] = "FY2018")),
+		    PQL.Assert.ShouldEqual("Sales Amount by Due Date | FY2018", 23348493.12, ROUND(CALCULATE([Sales Amount by Due Date], 'Date'[Fiscal Year] = "FY2018"), 2)),
+		    PQL.Assert.ShouldEqual("Total Sales | FY2019", 34070108.5, ROUND(CALCULATE([Total Sales], 'Date'[Fiscal Year] = "FY2019"), 2)),
+		    PQL.Assert.ShouldEqual("Total Quantity | FY2019", 83339, CALCULATE([Total Quantity], 'Date'[Fiscal Year] = "FY2019")),
+		    PQL.Assert.ShouldEqual("Order Lines Count | FY2019", 26050, CALCULATE([Order Lines Count], 'Date'[Fiscal Year] = "FY2019")),
+		    PQL.Assert.ShouldEqual("Sales Amount by Due Date | FY2019", 33636168.52, ROUND(CALCULATE([Sales Amount by Due Date], 'Date'[Fiscal Year] = "FY2019"), 2)),
+		    PQL.Assert.ShouldEqual("Total Sales | FY2020", 51878274.54, ROUND(CALCULATE([Total Sales], 'Date'[Fiscal Year] = "FY2020"), 2)),
+		    PQL.Assert.ShouldEqual("Total Quantity | FY2020", 167088, CALCULATE([Total Quantity], 'Date'[Fiscal Year] = "FY2020")),
+		    PQL.Assert.ShouldEqual("Order Lines Count | FY2020", 84285, CALCULATE([Order Lines Count], 'Date'[Fiscal Year] = "FY2020")),
+		    PQL.Assert.ShouldEqual("Sales Amount by Due Date | FY2020", 52824612.56, ROUND(CALCULATE([Sales Amount by Due Date], 'Date'[Fiscal Year] = "FY2020"), 2)),
+		
+		    // ===== 3.3 Par categorie =====
+		    PQL.Assert.ShouldEqual("Total Sales | Accessories", 1272057.89, ROUND(CALCULATE([Total Sales], Product[Category] = "Accessories"), 2)),
+		    PQL.Assert.ShouldEqual("Total Quantity | Accessories", 61931, CALCULATE([Total Quantity], Product[Category] = "Accessories")),
+		    PQL.Assert.ShouldEqual("Order Lines Count | Accessories", 41193, CALCULATE([Order Lines Count], Product[Category] = "Accessories")),
+		    PQL.Assert.ShouldEqual("Total Sales | Bikes", 94620526.21, ROUND(CALCULATE([Total Sales], Product[Category] = "Bikes"), 2)),
+		    PQL.Assert.ShouldEqual("Total Quantity | Bikes", 90220, CALCULATE([Total Quantity], Product[Category] = "Bikes")),
+		    PQL.Assert.ShouldEqual("Order Lines Count | Bikes", 40005, CALCULATE([Order Lines Count], Product[Category] = "Bikes")),
+		    PQL.Assert.ShouldEqual("Total Sales | Clothing", 2117613.45, ROUND(CALCULATE([Total Sales], Product[Category] = "Clothing"), 2)),
+		    PQL.Assert.ShouldEqual("Total Quantity | Clothing", 73598, CALCULATE([Total Quantity], Product[Category] = "Clothing")),
+		    PQL.Assert.ShouldEqual("Order Lines Count | Clothing", 21368, CALCULATE([Order Lines Count], Product[Category] = "Clothing")),
+		    PQL.Assert.ShouldEqual("Total Sales | Components", 11799076.66, ROUND(CALCULATE([Total Sales], Product[Category] = "Components"), 2)),
+		    PQL.Assert.ShouldEqual("Total Quantity | Components", 49027, CALCULATE([Total Quantity], Product[Category] = "Components")),
+		    PQL.Assert.ShouldEqual("Order Lines Count | Components", 18687, CALCULATE([Order Lines Count], Product[Category] = "Components")),
+		
+		    // ===== 3.4 Par groupe de territoire =====
+		    PQL.Assert.ShouldEqual("Total Sales | Europe", 19800577.06, ROUND(CALCULATE([Total Sales], 'Sales Territory'[Group] = "Europe"), 2)),
+		    PQL.Assert.ShouldEqual("Total Quantity | Europe", 53010, CALCULATE([Total Quantity], 'Sales Territory'[Group] = "Europe")),
+		    PQL.Assert.ShouldEqual("Order Lines Count | Europe", 26978, CALCULATE([Order Lines Count], 'Sales Territory'[Group] = "Europe")),
+		    PQL.Assert.ShouldEqual("Total Sales | North America", 79353361.18, ROUND(CALCULATE([Total Sales], 'Sales Territory'[Group] = "North America"), 2)),
+		    PQL.Assert.ShouldEqual("Total Quantity | North America", 203473, CALCULATE([Total Quantity], 'Sales Territory'[Group] = "North America")),
+		    PQL.Assert.ShouldEqual("Order Lines Count | North America", 79217, CALCULATE([Order Lines Count], 'Sales Territory'[Group] = "North America")),
+		    PQL.Assert.ShouldEqual("Total Sales | Pacific", 10655335.96, ROUND(CALCULATE([Total Sales], 'Sales Territory'[Group] = "Pacific"), 2)),
+		    PQL.Assert.ShouldEqual("Total Quantity | Pacific", 18293, CALCULATE([Total Quantity], 'Sales Territory'[Group] = "Pacific")),
+		    PQL.Assert.ShouldEqual("Order Lines Count | Pacific", 15058, CALCULATE([Order Lines Count], 'Sales Territory'[Group] = "Pacific")),
+		
+		    // ===== 3.5 Annee fiscale x categorie (Total Sales) =====
+		    PQL.Assert.ShouldEqual("Total Sales | FY2018 x Accessories", 36814.85, ROUND(CALCULATE([Total Sales], 'Date'[Fiscal Year] = "FY2018", Product[Category] = "Accessories"), 2)),
+		    PQL.Assert.ShouldEqual("Total Sales | FY2018 x Bikes", 22590983.47, ROUND(CALCULATE([Total Sales], 'Date'[Fiscal Year] = "FY2018", Product[Category] = "Bikes"), 2)),
+		    PQL.Assert.ShouldEqual("Total Sales | FY2018 x Clothing", 66327.53, ROUND(CALCULATE([Total Sales], 'Date'[Fiscal Year] = "FY2018", Product[Category] = "Clothing"), 2)),
+		    PQL.Assert.ShouldEqual("Total Sales | FY2018 x Components", 1166765.32, ROUND(CALCULATE([Total Sales], 'Date'[Fiscal Year] = "FY2018", Product[Category] = "Components"), 2)),
+		    PQL.Assert.ShouldEqual("Total Sales | FY2019 x Accessories", 138901.55, ROUND(CALCULATE([Total Sales], 'Date'[Fiscal Year] = "FY2019", Product[Category] = "Accessories"), 2)),
+		    PQL.Assert.ShouldEqual("Total Sales | FY2019 x Bikes", 28544881.62, ROUND(CALCULATE([Total Sales], 'Date'[Fiscal Year] = "FY2019", Product[Category] = "Bikes"), 2)),
+		    PQL.Assert.ShouldEqual("Total Sales | FY2019 x Clothing", 757224.19, ROUND(CALCULATE([Total Sales], 'Date'[Fiscal Year] = "FY2019", Product[Category] = "Clothing"), 2)),
+		    PQL.Assert.ShouldEqual("Total Sales | FY2019 x Components", 4629101.14, ROUND(CALCULATE([Total Sales], 'Date'[Fiscal Year] = "FY2019", Product[Category] = "Components"), 2)),
+		    PQL.Assert.ShouldEqual("Total Sales | FY2020 x Accessories", 1096341.49, ROUND(CALCULATE([Total Sales], 'Date'[Fiscal Year] = "FY2020", Product[Category] = "Accessories"), 2)),
+		    PQL.Assert.ShouldEqual("Total Sales | FY2020 x Bikes", 43484661.12, ROUND(CALCULATE([Total Sales], 'Date'[Fiscal Year] = "FY2020", Product[Category] = "Bikes"), 2)),
+		    PQL.Assert.ShouldEqual("Total Sales | FY2020 x Clothing", 1294061.73, ROUND(CALCULATE([Total Sales], 'Date'[Fiscal Year] = "FY2020", Product[Category] = "Clothing"), 2)),
+		    PQL.Assert.ShouldEqual("Total Sales | FY2020 x Components", 6003210.2, ROUND(CALCULATE([Total Sales], 'Date'[Fiscal Year] = "FY2020", Product[Category] = "Components"), 2)),
+		
+		    // ===== 4. Regles de coherence (tolerance 0.01) =====
+		    PQL.Assert.ShouldBeTrue("C1 | Total Sales = Sales Amount by Due Date",
+		        ABS([Total Sales] - [Sales Amount by Due Date]) <= 0.01),
+		    PQL.Assert.ShouldBeTrue("C2 | Somme par categorie = Total Sales",
+		        ABS(SUMX(VALUES(Product[Category]), [Total Sales]) - [Total Sales]) <= 0.01),
+		    PQL.Assert.ShouldBeTrue("C3 | Somme par groupe de territoire = Total Sales",
+		        ABS(SUMX(VALUES('Sales Territory'[Group]), [Total Sales]) - [Total Sales]) <= 0.01),
+		    PQL.Assert.ShouldBeTrue("C4a | Total Quantity = somme par annee, categorie et groupe",
+		        [Total Quantity] = SUMX(VALUES('Date'[Fiscal Year]), [Total Quantity])
+		        && [Total Quantity] = SUMX(VALUES(Product[Category]), [Total Quantity])
+		        && [Total Quantity] = SUMX(VALUES('Sales Territory'[Group]), [Total Quantity])),
+		    PQL.Assert.ShouldBeTrue("C4b | Order Lines Count = somme par annee, categorie et groupe",
+		        [Order Lines Count] = SUMX(VALUES('Date'[Fiscal Year]), [Order Lines Count])
+		        && [Order Lines Count] = SUMX(VALUES(Product[Category]), [Order Lines Count])
+		        && [Order Lines Count] = SUMX(VALUES('Sales Territory'[Group]), [Order Lines Count]))
+		)
+	lineageTag: c8e25c1e-79c5-4f85-aa28-7e7b2fe42726
+
