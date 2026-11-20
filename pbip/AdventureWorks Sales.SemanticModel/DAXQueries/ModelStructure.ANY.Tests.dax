@@ -1,0 +1,46 @@
+DEFINE
+FUNCTION ModelStructure.ANY.Tests = () =>
+UNION(
+    // ===== Tables presentes =====
+    PQL.Assert.ShouldEqual("Table presente | Customer", 1, COUNTROWS(FILTER(INFO.TABLES(), [Name] = "Customer"))),
+    PQL.Assert.ShouldEqual("Table presente | Date", 1, COUNTROWS(FILTER(INFO.TABLES(), [Name] = "Date"))),
+    PQL.Assert.ShouldEqual("Table presente | Product", 1, COUNTROWS(FILTER(INFO.TABLES(), [Name] = "Product"))),
+    PQL.Assert.ShouldEqual("Table presente | Reseller", 1, COUNTROWS(FILTER(INFO.TABLES(), [Name] = "Reseller"))),
+    PQL.Assert.ShouldEqual("Table presente | Sales", 1, COUNTROWS(FILTER(INFO.TABLES(), [Name] = "Sales"))),
+    PQL.Assert.ShouldEqual("Table presente | Sales Order", 1, COUNTROWS(FILTER(INFO.TABLES(), [Name] = "Sales Order"))),
+    PQL.Assert.ShouldEqual("Table presente | Sales Territory", 1, COUNTROWS(FILTER(INFO.TABLES(), [Name] = "Sales Territory"))),
+    PQL.Assert.ShouldEqual("Table presente | Table", 1, COUNTROWS(FILTER(INFO.TABLES(), [Name] = "Table"))),
+
+    // ===== Mesures presentes =====
+    PQL.Assert.ShouldEqual("Mesure presente | Total Sales", 1, COUNTROWS(FILTER(INFO.MEASURES(), [Name] = "Total Sales"))),
+    PQL.Assert.ShouldEqual("Mesure presente | Total Quantity", 1, COUNTROWS(FILTER(INFO.MEASURES(), [Name] = "Total Quantity"))),
+    PQL.Assert.ShouldEqual("Mesure presente | Order Lines Count", 1, COUNTROWS(FILTER(INFO.MEASURES(), [Name] = "Order Lines Count"))),
+    PQL.Assert.ShouldEqual("Mesure presente | Sales Amount by Due Date", 1, COUNTROWS(FILTER(INFO.MEASURES(), [Name] = "Sales Amount by Due Date"))),
+
+    // ===== Nombre de relations =====
+    PQL.Assert.ShouldEqual("Relations | total", 12, COUNTROWS(INFO.RELATIONSHIPS())),
+    PQL.Assert.ShouldEqual("Relations | actives", 10, COUNTROWS(FILTER(INFO.RELATIONSHIPS(), [IsActive] = TRUE()))),
+    PQL.Assert.ShouldEqual("Relations | inactives", 2, COUNTROWS(FILTER(INFO.RELATIONSHIPS(), [IsActive] = FALSE()))),
+
+    // ===== Relations metier (presence + etat) =====
+    PQL.Assert.ShouldEqual("Relation active | Sales[CustomerKey] -> Customer", 1,
+        COUNTROWS(FILTER(INFO.VIEW.RELATIONSHIPS(), [FromTable] = "Sales" && [FromColumn] = "CustomerKey" && [ToTable] = "Customer" && [ToColumn] = "CustomerKey" && [IsActive] = TRUE()))),
+    PQL.Assert.ShouldEqual("Relation active | Sales[ProductKey] -> Product", 1,
+        COUNTROWS(FILTER(INFO.VIEW.RELATIONSHIPS(), [FromTable] = "Sales" && [FromColumn] = "ProductKey" && [ToTable] = "Product" && [ToColumn] = "ProductKey" && [IsActive] = TRUE()))),
+    PQL.Assert.ShouldEqual("Relation active | Sales[ResellerKey] -> Reseller", 1,
+        COUNTROWS(FILTER(INFO.VIEW.RELATIONSHIPS(), [FromTable] = "Sales" && [FromColumn] = "ResellerKey" && [ToTable] = "Reseller" && [ToColumn] = "ResellerKey" && [IsActive] = TRUE()))),
+    PQL.Assert.ShouldEqual("Relation active | Sales[SalesOrderLineKey] <-> Sales Order", 1,
+        COUNTROWS(FILTER(INFO.VIEW.RELATIONSHIPS(), [FromTable] = "Sales" && [FromColumn] = "SalesOrderLineKey" && [ToTable] = "Sales Order" && [ToColumn] = "SalesOrderLineKey" && [IsActive] = TRUE()))),
+    PQL.Assert.ShouldEqual("Relation active | Sales[SalesTerritoryKey] -> Sales Territory", 1,
+        COUNTROWS(FILTER(INFO.VIEW.RELATIONSHIPS(), [FromTable] = "Sales" && [FromColumn] = "SalesTerritoryKey" && [ToTable] = "Sales Territory" && [ToColumn] = "SalesTerritoryKey" && [IsActive] = TRUE()))),
+    PQL.Assert.ShouldEqual("Relation active | Sales[OrderDateKey] -> Date[DateKey]", 1,
+        COUNTROWS(FILTER(INFO.VIEW.RELATIONSHIPS(), [FromTable] = "Sales" && [FromColumn] = "OrderDateKey" && [ToTable] = "Date" && [ToColumn] = "DateKey" && [IsActive] = TRUE()))),
+    PQL.Assert.ShouldEqual("Relation active | Product[Category] -> Table[Category]", 1,
+        COUNTROWS(FILTER(INFO.VIEW.RELATIONSHIPS(), [FromTable] = "Product" && [FromColumn] = "Category" && [ToTable] = "Table" && [ToColumn] = "Category" && [IsActive] = TRUE()))),
+    PQL.Assert.ShouldEqual("Relation inactive | Sales[DueDateKey] -> Date[DateKey]", 1,
+        COUNTROWS(FILTER(INFO.VIEW.RELATIONSHIPS(), [FromTable] = "Sales" && [FromColumn] = "DueDateKey" && [ToTable] = "Date" && [ToColumn] = "DateKey" && [IsActive] = FALSE()))),
+    PQL.Assert.ShouldEqual("Relation inactive | Sales[ShipDateKey] -> Date[DateKey]", 1,
+        COUNTROWS(FILTER(INFO.VIEW.RELATIONSHIPS(), [FromTable] = "Sales" && [FromColumn] = "ShipDateKey" && [ToTable] = "Date" && [ToColumn] = "DateKey" && [IsActive] = FALSE())))
+)
+
+EVALUATE Structure.ANY.Tests()
